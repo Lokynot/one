@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Code checkout completed'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'python3 -m pip install --user pytest'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'python3 -m pytest -v'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Build completed successfully!'
+            }
+        }
+    }
+}
