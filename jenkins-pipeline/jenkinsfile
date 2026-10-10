@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
                 echo 'Code checkout completed'
@@ -11,7 +12,11 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('jenkins-pipeline') {
-                    sh 'python3 -m pip install --user -r requirements.txt'
+                    sh '''
+                        python3 -m venv .venv
+                        .venv/bin/python -m pip install --upgrade pip
+                        .venv/bin/pip install -r requirements.txt
+                    '''
                 }
             }
         }
@@ -19,7 +24,7 @@ pipeline {
         stage('Test') {
             steps {
                 dir('jenkins-pipeline') {
-                    sh 'python3 -m pytest -v'
+                    sh '.venv/bin/python -m pytest -v'
                 }
             }
         }
